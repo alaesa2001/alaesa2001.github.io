@@ -20,30 +20,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out portfolio source
+      - name: Check out portfolio
         uses: actions/checkout@v4
-        with:
-          repository: alaesa2001/alae-eddine-sahbou
-          ref: main
-          path: source
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.13.0
           cache: npm
-          cache-dependency-path: source/package-lock.json
 
       - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
-        working-directory: source
         run: npm ci
 
       - name: Build root site
-        working-directory: source
         env:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
@@ -52,7 +45,7 @@ jobs:
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: source/out
+          path: out
 
   deploy:
     environment:
